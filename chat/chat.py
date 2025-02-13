@@ -5,6 +5,8 @@ from sqlalchemy.orm import Session
 from .models import ChatHistory
 import jwt
 
+
+
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -26,11 +28,9 @@ generation_config = {
 }
 
 model = genai.GenerativeModel(
-  model_name="gemini-1.5-pro",
+  model_name="gemini-1.5-flash",
   generation_config=generation_config,
 )
-
-
 
 chat_session = model.start_chat(history=[])
 
@@ -54,18 +54,20 @@ def save_chat_history(db: Session, user_id: str, historyId:str, user_input: str,
 
 
 def get_chat_history_by_historyId(db: Session, history_id: str):
-    return db.query(ChatHistory).filter(ChatHistory.history_id == history_id).all()
+    return db.query(ChatHistory).filter(ChatHistory.user_id == history_id).all()
 
 
 def get_chat_history(db: Session, user_id: str):
   
     histories = db.query(ChatHistory).filter(ChatHistory.user_id == user_id).all()
+
     unique_histories = {}
     
     for history in histories:
         if history.history_id not in unique_histories:
             unique_histories[history.history_id] = history
     
+
     return list(unique_histories.values())
 
 
