@@ -54,7 +54,7 @@ def save_chat_history(db: Session, user_id: str, historyId:str, user_input: str,
 
 
 def get_chat_history_by_historyId(db: Session, history_id: str):
-    return db.query(ChatHistory).filter(ChatHistory.user_id == history_id).all()
+    return db.query(ChatHistory).filter(ChatHistory.history_id == history_id).all()
 
 
 def get_chat_history(db: Session, user_id: str):
